@@ -1,9 +1,9 @@
-// TODO: Include packages needed for this application
+// Packages
 const fs = require("fs");
 const inquirer = require("inquirer");
 const generateMarkdown = require("./utils/generateMarkdown.js");
 
-// TODO: Create an array of questions for user input
+// Array of questions for user input
 const questions = [
   {
     type: "input",
@@ -16,35 +16,40 @@ const questions = [
         console.log("Please enter your project title!");
         return false;
       }
-    }
+    },
   },
   {
     type: "input",
     name: "Description",
     message: "Please provide a description for your project",
-    default: "No description"
+    default: "No description",
   },
   {
     type: "input",
     name: "Installation instructions",
-    message: "Please provide installation instructions for your project"
+    message: "Please provide installation instructions for your project",
   },
   {
     type: "input",
     name: "Usage information",
-    message: "Please provide usage information for your project"
+    message: "Please provide usage information for your project",
+  },
+  {
+    type: "checkbox",
+    name: "License",
+    message: "Please choose a license required for your project",
+    choices: ["MIT", "ISC", "Apache 2", "CC-BY-3.0", "CC-BY-4.0"],
   },
   {
     type: "input",
     name: "Contribution guidelines",
-    message: "Please provide contribution guidelines for your project"
+    message: "Please provide contribution guidelines for your project",
   },
   {
     type: "input",
     name: "Test instructions",
-    message: "Please provide test instructions for your project"
-  }
-
+    message: "Please provide test instructions for your project",
+  },
 ];
 
 const promptUser = () => {
@@ -62,14 +67,14 @@ const promptUser = () => {
     });
 };
 
-// TODO: Create a function to write README file
+// Function to write README file
 function writeToFile(fileName, data) {
   fs.writeFile(fileName, data, (err) => {
     if (err) throw err;
     console.log("The file has been saved!");
   });
 }
-// TODO: Create a function to initialize app
+// Function to initialize app
 async function init() {
   try {
     let data = await promptUser();

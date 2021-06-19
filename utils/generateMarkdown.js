@@ -1,14 +1,50 @@
-// TODO: Create a function that returns a license badge based on which license is passed in
+// Function that returns a license badge based on which license is passed in
 // If there is no license, return an empty string
-function renderLicenseBadge(license) {}
+function renderLicenseBadge(license) {
+  let link = renderLicenseLink(license);
+  // ![badmath](https://img.shields.io/github/languages/top/nielsenjared/badmath)
+  let badge = "![license](" + link + ")";
 
-// TODO: Create a function that returns the license link
+  return badge;
+}
+// Function that returns the license link
 // If there is no license, return an empty string
-function renderLicenseLink(license) {}
+function renderLicenseLink(license) {
+  console.log("Test", license);
+  // license11 = Object.entries(license);
+  // https://img.shields.io/badge/license-MIT/awd-blue?style=plastic
+  // let licenseArray = license11.split(",");
+  let licenseString;
+  license.forEach((element) => {
+    licenseString ? (licenseString += "/") : (licenseString = "");
+    licenseString += element;
+  });
+  // console.log("TestBefore:", licenseString);
+  // licenseString.replace('-', '--');
+  // console.log("TestAfter:", licenseString.replace(/-/g, '--'));
 
-// TODO: Create a function that returns the license section of README
+  licenseString = licenseString.replace(/-/g, "--");
+  licenseString = licenseString.replace(/ /g, "--");
+
+  let link =
+    "https://img.shields.io/badge/license-" +
+    licenseString +
+    "-blue?style=plastic";
+
+  return link;
+}
+
+// Function that returns the license section of README
 // If there is no license, return an empty string
-function renderLicenseSection(license) {}
+function renderLicenseSection(license) {
+  let badge = renderLicenseBadge(license);
+  let section = `${badge}
+
+
+`;
+
+  return section;
+}
 
 function generateTitle(data) {
   const text = `# ${data.title}
@@ -16,8 +52,6 @@ function generateTitle(data) {
 `;
 
   return text;
-
-  // console.log(data);
 }
 
 function generateOtherMarks(data) {
@@ -27,10 +61,13 @@ function generateOtherMarks(data) {
     // console.log("Test", data);
     data.forEach((element) => {
       // Check if a user provided any input for a section
-      if (element[1]) {
+      console.log("element[1]: ", element[1]);
+      if (element[1] && element[1].length > 0) {
         // Add the section to the README file
         text += `## ${element[0]}
+
 ${element[1]}
+
 
 `;
       }
@@ -42,11 +79,17 @@ ${element[1]}
   return text;
 }
 
-// TODO: Create a function to generate markdown for README
+// Function to generate markdown for README
 function generateMarkdown(data) {
   let resultText = "";
   resultText += generateTitle(data);
   delete data.title;
+
+  // console.log("data.License", data.License);
+  
+  if (data.License.length > 0) {
+    resultText += renderLicenseSection(data.License);
+  }
 
   resultText += generateOtherMarks(data);
   console.log(resultText);
