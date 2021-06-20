@@ -79,19 +79,35 @@ ${element[1]}
   return text;
 }
 
+
+generateQuestionsMarks = (username, email)  => {
+  let text = `## Questions
+
+GitHub profile: https://github.com/${username}
+
+In case of additional questions, please reach out to me at ${email}
+`;
+
+return text;
+};
+
 // Function to generate markdown for README
 function generateMarkdown(data) {
+  const {gitHubUsername, email, ...restData} = data;
+  
   let resultText = "";
-  resultText += generateTitle(data);
-  delete data.title;
+  resultText += generateTitle(restData);
+  delete restData.title;
 
   // console.log("data.License", data.License);
   
-  if (data.License.length > 0) {
-    resultText += renderLicenseSection(data.License);
+  if (restData.License.length > 0) {
+    resultText += renderLicenseSection(restData.License);
   }
 
-  resultText += generateOtherMarks(data);
+  resultText += generateOtherMarks(restData);
+
+  resultText += generateQuestionsMarks(gitHubUsername, email);
   console.log(resultText);
 
   return resultText;

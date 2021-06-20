@@ -7,6 +7,33 @@ const generateMarkdown = require("./utils/generateMarkdown.js");
 const questions = [
   {
     type: "input",
+    name: "gitHubUsername",
+    message: "What is your GitHub username? (Required)",
+    validate: (nameInput) => {
+      if (nameInput) {
+        return true;
+      } else {
+        console.log("Please enter your GitHub username!");
+        return false;
+      }
+    },
+  },
+  {
+    type: "input",
+    name: "email",
+    message: "What is your email username? (Required)",
+    validate: (nameInput) => {
+      if (nameInput) {
+        return true;
+      } else {
+        nameInput = "";
+        console.log("Please enter your email username!");
+        return false;
+      }
+    },
+  },
+  {
+    type: "input",
     name: "title",
     message: "What is your project title? (Required)",
     validate: (nameInput) => {
