@@ -27,7 +27,7 @@ const questions = [
         return true;
       } else {
         nameInput = "";
-        console.log("Please enter your email username!");
+        console.log("Please enter your email!");
         return false;
       }
     },
