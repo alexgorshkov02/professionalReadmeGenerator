@@ -97,7 +97,6 @@ ${content}
 };
 
 const generateMarkForDescription = (description) => {
-  description = formatSectionName(description);
   const text = `## Description
   
 ${description}
