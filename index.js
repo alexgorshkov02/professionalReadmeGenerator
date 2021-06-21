@@ -1,10 +1,45 @@
-// TODO: Include packages needed for this application
+// Packages
 const fs = require("fs");
 const inquirer = require("inquirer");
 const generateMarkdown = require("./utils/generateMarkdown.js");
 
-// TODO: Create an array of questions for user input
+// Function to validate an email
+const validateEmail = (emailInput) => {
+  const regEx =
+    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return regEx.test(String(emailInput).toLowerCase());
+};
+
+// Array of questions for user input
 const questions = [
+  {
+    type: "input",
+    name: "gitHubUserName",
+    message: "What is your GitHub username? (Required)",
+    validate: (nameInput) => {
+      if (nameInput) {
+        return true;
+      } else {
+        console.log("Please enter your GitHub username!");
+        return false;
+      }
+    },
+  },
+  {
+    type: "input",
+    name: "email",
+    message: "What is your email? (Required)",
+    validate: (emailInput) => {
+      if (validateEmail(emailInput)) {
+        return true;
+      } else {
+        process.stdout.clearLine();
+        process.stdout.cursorTo(0);
+        console.log("Please enter your valid email!");
+        return false;
+      }
+    },
+  },
   {
     type: "input",
     name: "title",
@@ -16,35 +51,40 @@ const questions = [
         console.log("Please enter your project title!");
         return false;
       }
-    }
+    },
   },
   {
     type: "input",
-    name: "Description",
+    name: "description",
     message: "Please provide a description for your project",
-    default: "No description"
+    default: "No description",
   },
   {
     type: "input",
-    name: "Installation instructions",
-    message: "Please provide installation instructions for your project"
+    name: "installation instructions",
+    message: "Please provide installation instructions for your project",
   },
   {
     type: "input",
-    name: "Usage information",
-    message: "Please provide usage information for your project"
+    name: "usage information",
+    message: "Please provide usage information for your project",
+  },
+  {
+    type: "checkbox",
+    name: "license",
+    message: "Please choose a license required for your project",
+    choices: ["ISC", "MIT", "GPLv2", "Apache 2", "BSD 3-clause", "CC-BY-4.0"],
   },
   {
     type: "input",
-    name: "Contribution guidelines",
-    message: "Please provide contribution guidelines for your project"
+    name: "contribution guidelines",
+    message: "Please provide contribution guidelines for your project",
   },
   {
     type: "input",
-    name: "Test instructions",
-    message: "Please provide test instructions for your project"
-  }
-
+    name: "test instructions",
+    message: "Please provide test instructions for your project",
+  },
 ];
 
 const promptUser = () => {
@@ -55,33 +95,31 @@ const promptUser = () => {
     })
     .catch((error) => {
       if (error.isTtyError) {
-        // Prompt couldn't be rendered in the current environment
+        console.log("Error in the current environment: ", error);
       } else {
-        // Something else went wrong
+        console.log("Error: ", error);
       }
     });
 };
 
-// TODO: Create a function to write README file
-function writeToFile(fileName, data) {
+// Function to write README file
+const writeToFile = (fileName, data) => {
   fs.writeFile(fileName, data, (err) => {
     if (err) throw err;
     console.log("The file has been saved!");
   });
-}
-// TODO: Create a function to initialize app
-async function init() {
+};
+// Function to initialize app
+const init = async () => {
   try {
     let data = await promptUser();
-    console.log(data);
-
     data = generateMarkdown(data);
-    // console.log(data);
-    writeToFile("test.md", data);
+
+    writeToFile("./dist/README.md", data);
   } catch (error) {
-    console.log(error);
+    console.log("Error: ", error);
   }
-}
+};
 
 // Function call to initialize app
 init();
